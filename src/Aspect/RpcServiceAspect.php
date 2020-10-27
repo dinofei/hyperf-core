@@ -31,10 +31,10 @@ class RpcServiceAspect extends AbstractAspect
         $response = ApplicationContext::getContainer()->get(JsonRpcResponse::class);
         try {
             $data = $proceedingJoinPoint->process();
-            return $response->success($data, GlobalSuccessCode::SUCCESS);
+            return $response->success($data, GlobalSuccessCode::SUCCESS, GlobalSuccessCode::getMessage(GlobalSuccessCode::SUCCESS));
         } catch (ValidationException $e) {
             /** 验证失败 直接抛出错误信息 不需要记录日志 */
-            return $response->fail(GlobalStatusCode::VALIDATION_FAIL, $e->validator->errors()->first());
+            return $response->fail([], GlobalStatusCode::VALIDATION_FAIL, $e->validator->errors()->first());
         } catch (BaseException $e) {
             /** 当前为开发环境时 直接将错误信息返给客户端 */
             $message = extract_exception_message($e, $e->getTitle());
@@ -43,7 +43,7 @@ class RpcServiceAspect extends AbstractAspect
                 LogUtil::get('http', 'core-default')->error($message);
                 $message = GlobalErrorCode::getMessage($e->getCode()) ?? GlobalErrorCode::getMessage(GlobalErrorCode::SERVER_ERROR);
             }
-            return $response->fail($e->getCode(), $message);
+            return $response->fail([], $e->getCode(), $message);
         } catch (\Throwable $e) {
             /** 当前为开发环境时 直接将错误信息返给客户端 */
             $message = extract_exception_message($e);
@@ -52,7 +52,7 @@ class RpcServiceAspect extends AbstractAspect
                 LogUtil::get('http', 'core-default')->error($message);
                 $message = GlobalErrorCode::getMessage(GlobalErrorCode::SERVER_ERROR);
             }
-            return $response->fail($e->getCode(), $message);
+            return $response->fail([], $e->getCode(), $message);
         }
     }
 }
