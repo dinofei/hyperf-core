@@ -4,9 +4,7 @@ declare(strict_types=1);
 namespace Bjyyb\Core\Response;
 
 use Bjyyb\Core\Base\BaseResponse;
-use Bjyyb\Core\Constants\GlobalErrorCode;
 use Bjyyb\Core\Constants\GlobalStatusCode;
-use Bjyyb\Core\Constants\GlobalSuccessCode;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -36,32 +34,35 @@ class HttpJsonResponse extends BaseResponse
      * 输出成功请求
      * @param mixed $data
      * @param int $code
-     * @return mixed
+     * @param string $message
+     * @return ResponseInterface
      * Author: nf
      * Time: 2020/10/27 16:15
      */
-    public function success($data, int $code)
+    public function success($data, int $code, string $message)
     {
         return $this->response->withStatus(GlobalStatusCode::SUCCESS)->json([
             'code' => $code,
-            'message' => GlobalSuccessCode::getMessage($code),
+            'message' => $message,
             'data' => $data,
         ]);
     }
 
     /**
      * 输出失败请求
+     * @param $data
      * @param int $code
      * @param string|null $message
-     * @return mixed
+     * @return ResponseInterface
      * Author: nf
      * Time: 2020/10/27 16:15
      */
-    public function fail(int $code, ?string $message = null)
+    public function fail($data, int $code, string $message)
     {
         return $this->response->withStatus(GlobalStatusCode::SERVER_ERROR)->json([
             'code' => $code,
-            'message' => $message ?? GlobalErrorCode::getMessage($code),
+            'message' => $message,
+            'data' => $data,
         ]);
     }
 
