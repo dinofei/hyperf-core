@@ -2,7 +2,6 @@
 
 namespace Bjyyb\Core;
 
-use Bjyyb\Core\Aspect\CoreControllerAspect;
 use Bjyyb\Core\Exception\Handler\Http\AppExceptionHandler;
 use Bjyyb\Core\Exception\Handler\Http\AppValidationExceptionHandler;
 use Bjyyb\Core\Exception\Handler\Http\BaseExceptionHandler;
@@ -29,7 +28,6 @@ class ConfigProvider
                 ErrorExceptionHandler::class,
             ],
             'aspects' => [
-                CoreControllerAspect::class,
             ],
             'exceptions' => [
                 'handler' => [
