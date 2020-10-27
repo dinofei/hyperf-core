@@ -1,0 +1,26 @@
+{
+  "name": "bjyyb/hyperf-core",
+  "description": "hyperf框架基础库",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "ningfei",
+      "email": "1056593544@qq.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.2",
+    "ext-swoole": ">=4.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Bjyyb\\Core\\": "./src"
+    }
+  },
+  "extra": {
+    "hyperf": {
+      "config": "Bjyyb\\Core\\ConfigProvider"
+    }
+  }
+}
