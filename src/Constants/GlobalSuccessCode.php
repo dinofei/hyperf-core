@@ -9,10 +9,15 @@ use Hyperf\Constants\Annotation\Constants;
 
 /**
  * Note: 全局异成功状态码枚举类
+ *
+ * @method static string getMessage(int $code) 获取提示信息
+ *
+ * @Constants()
+ *
+ *
  * Author: nf
  * Time: 2020/10/26 15:23
  *
- * @Constants()
  */
 class GlobalSuccessCode extends AbstractConstants
 {

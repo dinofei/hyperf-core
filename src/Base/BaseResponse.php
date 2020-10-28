@@ -16,5 +16,5 @@ abstract class BaseResponse
      * Author: nf
      * Time: 2020/10/27 15:47
      */
-    abstract protected function getServerName();
+    abstract protected function getServerName(): string;
 }

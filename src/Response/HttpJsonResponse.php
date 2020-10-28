@@ -4,9 +4,12 @@ declare(strict_types=1);
 namespace Bjyyb\Core\Response;
 
 use Bjyyb\Core\Base\BaseResponse;
+use Bjyyb\Core\Constants\GlobalErrorCode;
 use Bjyyb\Core\Constants\GlobalStatusCode;
+use Bjyyb\Core\Constants\GlobalSuccessCode;
 use Psr\Container\ContainerInterface;
-use Psr\Http\Message\ResponseInterface;
+use Hyperf\HttpServer\Contract\ResponseInterface;
+use Psr\Http\Message\ResponseInterface as PsrResponseInterface;
 
 /**
  * Note: Http服务输出
@@ -24,7 +27,7 @@ class HttpJsonResponse extends BaseResponse
      */
     protected $container;
 
-    private function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
         $this->response = $container->get(ResponseInterface::class);
@@ -33,17 +36,17 @@ class HttpJsonResponse extends BaseResponse
     /**
      * 输出成功请求
      * @param mixed $data
-     * @param int $code
-     * @param string $message
-     * @return ResponseInterface
+     * @param int|null $code
+     * @param string|null $message
+     * @return PsrResponseInterface
      * Author: nf
      * Time: 2020/10/27 16:15
      */
-    public function success($data, int $code, string $message)
+    public function success($data = [], ?int $code = null, ?string $message = null)
     {
         return $this->response->withStatus(GlobalStatusCode::SUCCESS)->json([
-            'code' => $code,
-            'message' => $message,
+            'code' => $code ?? GlobalSuccessCode::SUCCESS,
+            'message' => $message ?? GlobalSuccessCode::getMessage(GlobalSuccessCode::SUCCESS),
             'data' => $data,
         ]);
     }
@@ -51,17 +54,17 @@ class HttpJsonResponse extends BaseResponse
     /**
      * 输出失败请求
      * @param $data
-     * @param int $code
+     * @param int|null $code
      * @param string|null $message
-     * @return ResponseInterface
+     * @return PsrResponseInterface
      * Author: nf
      * Time: 2020/10/27 16:15
      */
-    public function fail($data, int $code, string $message)
+    public function fail($data = [], ?int $code = null, ?string $message = null)
     {
         return $this->response->withStatus(GlobalStatusCode::SERVER_ERROR)->json([
-            'code' => $code,
-            'message' => $message,
+            'code' => $code ?? GlobalErrorCode::FAIL,
+            'message' => $message ?? GlobalErrorCode::getMessage(GlobalErrorCode::FAIL),
             'data' => $data,
         ]);
     }
@@ -72,7 +75,7 @@ class HttpJsonResponse extends BaseResponse
      * Author: nf
      * Time: 2020/10/27 15:42
      */
-    protected function getServerName()
+    protected function getServerName(): string
     {
         return 'http';
     }

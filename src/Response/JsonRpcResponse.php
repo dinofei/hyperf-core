@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Bjyyb\Core\Response;
 
 use Bjyyb\Core\Base\BaseResponse;
+use Bjyyb\Core\Constants\GlobalErrorCode;
+use Bjyyb\Core\Constants\GlobalSuccessCode;
 
 /**
  * Note: jsonrpc服务输出
@@ -16,35 +18,35 @@ class JsonRpcResponse extends BaseResponse
     /**
      * 输出成功请求
      * @param mixed $data
-     * @param int $code
-     * @param string
+     * @param int|null $code
+     * @param string|null $message
      * @return array
      * Author: nf
      * Time: 2020/10/27 16:15
      */
-    public function success($data, int $code, string $message)
+    public function success($data = [], ?int $code = null, ?string $message = null): array
     {
         return [
-            'code' => $code,
-            'message' => $message,
+            'code' => $code ?? GlobalSuccessCode::SUCCESS,
+            'message' => $message ?? GlobalSuccessCode::getMessage(GlobalSuccessCode::SUCCESS),
             'data' => $data,
         ];
     }
 
     /**
      * 输出失败请求
-     * @param $data
-     * @param int $code
+     * @param mixed $data
+     * @param int|null $code
      * @param string|null $message
      * @return array
      * Author: nf
      * Time: 2020/10/27 16:15
      */
-    public function fail($data, int $code, string $message)
+    public function fail($data = [], ?int $code = null, ?string $message = null): array
     {
         return [
-            'code' => $code,
-            'message' => $message,
+            'code' => $code ?? GlobalErrorCode::FAIL,
+            'message' => $message ?? GlobalErrorCode::getMessage(GlobalErrorCode::FAIL),
             'data' => $data,
         ];
     }
@@ -55,7 +57,7 @@ class JsonRpcResponse extends BaseResponse
      * Author: nf
      * Time: 2020/10/27 15:42
      */
-    protected function getServerName()
+    protected function getServerName(): string
     {
         return 'jsonrpc';
     }

@@ -5,6 +5,7 @@ namespace Bjyyb\Core;
 use Bjyyb\Core\Exception\Handler\Http\AppExceptionHandler;
 use Bjyyb\Core\Exception\Handler\Http\AppValidationExceptionHandler;
 use Bjyyb\Core\Exception\Handler\Http\BaseExceptionHandler;
+use Bjyyb\Core\Listener\DbQueryExecutedListener;
 use Hyperf\ExceptionHandler\Listener\ErrorExceptionHandler;
 
 class ConfigProvider
@@ -26,6 +27,7 @@ class ConfigProvider
             'commands' => [],
             'listeners' => [
                 ErrorExceptionHandler::class,
+                DbQueryExecutedListener::class,
             ],
             'aspects' => [
             ],
@@ -44,6 +46,23 @@ class ConfigProvider
                         'class' => \Monolog\Handler\StreamHandler::class,
                         'constructor' => [
                             'stream' => BASE_PATH . '/runtime/logs/hyperf.log',
+                            'level' => \Monolog\Logger::DEBUG,
+                        ],
+                    ],
+                    'formatter' => [
+                        'class' => \Monolog\Formatter\LineFormatter::class,
+                        'constructor' => [
+                            'format' => null,
+                            'dateFormat' => 'Y-m-d H:i:s',
+                            'allowInlineLineBreaks' => true,
+                        ],
+                    ],
+                ],
+                'core-sql' => [
+                    'handler' => [
+                        'class' => \Monolog\Handler\StreamHandler::class,
+                        'constructor' => [
+                            'stream' => BASE_PATH . '/runtime/logs/sql.log',
                             'level' => \Monolog\Logger::DEBUG,
                         ],
                     ],
