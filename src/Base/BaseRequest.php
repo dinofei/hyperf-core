@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace Bjyyb\Core\Base;
 
 
+use Hyperf\Contract\ValidatorInterface;
+use Hyperf\Utils\ApplicationContext;
 use Hyperf\Validation\Request\FormRequest;
 
 /**
@@ -21,12 +23,15 @@ class BaseRequest extends FormRequest
     /**
      * 手动传入数据验证
      * @param array $data
-     * @return mixed
+     * @return ValidatorInterface
      * Author: nf
      * Time: 2020/10/27 19:15
      */
-    public function validate(array $data)
+    public static function validate(array $data): ValidatorInterface
     {
-        return $this->getValidatorInstance()->setData($data)->validate();
+        /** @var ValidatorInterface $validator */
+        $validator = ApplicationContext::getContainer()->get(static::class)->getValidatorInstance();
+        $validator->setData($data)->validate();
+        return $validator;
     }
 }

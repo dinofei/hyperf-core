@@ -3,10 +3,9 @@
 namespace Bjyyb\Core;
 
 use Bjyyb\Core\Exception\Handler\Http\AppExceptionHandler;
-use Bjyyb\Core\Exception\Handler\Http\AppValidationExceptionHandler;
-use Bjyyb\Core\Exception\Handler\Http\BaseExceptionHandler;
 use Bjyyb\Core\Listener\DbQueryExecutedListener;
 use Hyperf\ExceptionHandler\Listener\ErrorExceptionHandler;
+use Hyperf\Validation\Middleware\ValidationMiddleware;
 
 class ConfigProvider
 {
@@ -31,11 +30,14 @@ class ConfigProvider
             ],
             'aspects' => [
             ],
+            'middlewares' => [
+                'http' => [
+                    ValidationMiddleware::class
+                ],
+            ],
             'exceptions' => [
                 'handler' => [
                     'http' => [
-                        AppValidationExceptionHandler::class,
-                        BaseExceptionHandler::class,
                         AppExceptionHandler::class,
                     ],
                 ],

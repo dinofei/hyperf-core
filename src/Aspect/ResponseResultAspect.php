@@ -4,47 +4,65 @@ declare(strict_types=1);
 namespace Bjyyb\Core\Aspect;
 
 
-use Bjyyb\Core\Constants\ErrorCode;
+use Bjyyb\Core\Annotation\ResponseResult;
 use Bjyyb\Core\Base\BaseException;
+use Bjyyb\Core\Constants\ErrorCode;
+use Bjyyb\Core\Constants\StatusCode;
 use Bjyyb\Core\DataStructure\Result;
 use Bjyyb\Core\Util\LogUtil;
+use Hyperf\Di\Annotation\Aspect;
 use Hyperf\Di\Aop\AbstractAspect;
 use Hyperf\Di\Aop\ProceedingJoinPoint;
-use Hyperf\RpcServer\Annotation\RpcService;
+use Hyperf\HttpServer\Contract\ResponseInterface;
+use Hyperf\Utils\ApplicationContext;
 use Hyperf\Validation\ValidationException;
 
 /**
- * Note: Rpc服务切面 包装返回结果
+ * Note: 结果包装器注解切面 统一拦截响应json格式数据
+ *
+ * @Aspect()
+ *
  * Author: nf
- * Time: 2020/10/27 17:33
+ * Time: 2020/10/29 10:21
  */
-class RpcServiceAspect extends AbstractAspect
+class ResponseResultAspect extends AbstractAspect
 {
 
-    public $annotations = [RpcService::class];
+    public $annotations = [ResponseResult::class];
 
+    /**
+     * @inheritDoc
+     */
     public function process(ProceedingJoinPoint $proceedingJoinPoint)
     {
+        $statusCode = StatusCode::SUCCESS;
         try {
             $data = $proceedingJoinPoint->process();
             $result = Result::success($data);
         } catch (ValidationException $e) {
             /** 参数验证失败时，不需要记录日志，只要把错误信息返回客户端即可 */
+            $statusCode = StatusCode::PARAM_ERROR;
             $result = Result::fail(ErrorCode::PARAM_VALIDATE_ERROR, $e->validator->errors()->first());
         } catch (BaseException $e) {
             /** 业务逻辑异常，不需要记录日志，直接将错误信息返给客户端 */
+            $statusCode = StatusCode::Fail;
             $result = Result::fail($e->getCode(), $e->getMessage());
         } catch (\Throwable $e) {
-            /** 代码异常或者未被捕获的其他异常 直接将错误信息返给客户端 */
-            /** 当前为开发环境时  */
+            /** 代码异常或者未被捕获的其他异常 */
+            /** 当前为开发环境时 直接将错误信息返给客户端 */
+            $statusCode = StatusCode::SERVER_ERROR;
             $message = extract_exception_message($e);
             $code = ErrorCode::SERVER_ERROR;
             if (env('APP_ENV', 'dev') !== 'dev') {
-                /** 当前为线上环境时，将错误信息同时保存在日志中 */
+                /** 当前为线上环境时，将错误信息输出到日志中 并给前端输出友好提示 */
                 LogUtil::get('http', 'core-default')->error($message);
+                $message = ErrorCode::getMessage($code);
             }
             $result = Result::fail($code, $message);
         }
-        return $result;
+        return ApplicationContext::getContainer()
+            ->get(ResponseInterface::class)
+            ->withStatus($statusCode)
+            ->json($result->toArray());
     }
 }
