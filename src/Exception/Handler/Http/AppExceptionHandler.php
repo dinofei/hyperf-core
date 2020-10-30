@@ -7,6 +7,8 @@ use Bjyyb\Core\Constants\ErrorCode;
 use Bjyyb\Core\Util\LogUtil;
 use Bjyyb\Core\Constants\StatusCode;
 use Hyperf\ExceptionHandler\ExceptionHandler;
+use Hyperf\HttpMessage\Stream\SwooleStream;
+use Hyperf\Utils\Codec\Json;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
 
@@ -29,7 +31,7 @@ class AppExceptionHandler extends ExceptionHandler
             LogUtil::get('http', 'core-default')->error($message);
             $message = ErrorCode::getMessage($code);
         }
-        return $response->withStatus($statusCode)->json(compact('code', 'message', 'data'));
+        return $response->withStatus($statusCode)->withBody(new SwooleStream(Json::encode(compact('code', 'message', 'data'))));
     }
 
     public function isValid(Throwable $throwable): bool
