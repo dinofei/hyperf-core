@@ -45,18 +45,35 @@ class ConfigProvider
                 ],
             ],
             'logger' => [
-                'core-default' => [
+                'default' => [
                     'handler' => [
-                        'class' => \Monolog\Handler\StreamHandler::class,
+                        'class' => \Monolog\Handler\RotatingFileHandler::class,
                         'constructor' => [
-                            'stream' => BASE_PATH . '/runtime/logs/hyperf.log',
-                            'level' => \Monolog\Logger::DEBUG,
+                            'filename' => env('LOG_PATH', BASE_PATH . '/runtime/logs') . '/default/hyperf.log',
+                            'level' => \Monolog\Logger::ERROR,
                         ],
                     ],
                     'formatter' => [
                         'class' => \Monolog\Formatter\LineFormatter::class,
                         'constructor' => [
-                            'format' => null,
+                            'format' => "%datetime% %level_name% %message% %context% %extra%\n",
+                            'dateFormat' => 'Y-m-d H:i:s',
+                            'allowInlineLineBreaks' => true,
+                        ],
+                    ],
+                ],
+                'core-default' => [
+                    'handler' => [
+                        'class' => \Monolog\Handler\RotatingFileHandler::class,
+                        'constructor' => [
+                            'filename' => env('LOG_PATH', BASE_PATH . '/runtime/logs') . '/default/hyperf.log',
+                            'level' => \Monolog\Logger::ERROR,
+                        ],
+                    ],
+                    'formatter' => [
+                        'class' => \Monolog\Formatter\LineFormatter::class,
+                        'constructor' => [
+                            'format' => "%datetime% %level_name% %message% %context% %extra%\n",
                             'dateFormat' => 'Y-m-d H:i:s',
                             'allowInlineLineBreaks' => true,
                         ],
@@ -64,16 +81,16 @@ class ConfigProvider
                 ],
                 'core-sql' => [
                     'handler' => [
-                        'class' => \Monolog\Handler\StreamHandler::class,
+                        'class' => \Monolog\Handler\RotatingFileHandler::class,
                         'constructor' => [
-                            'stream' => BASE_PATH . '/runtime/logs/sql.log',
-                            'level' => \Monolog\Logger::DEBUG,
+                            'filename' => env('LOG_PATH', BASE_PATH . '/runtime/logs') . '/sql/sql.log',
+                            'level' => \Monolog\Logger::ERROR,
                         ],
                     ],
                     'formatter' => [
                         'class' => \Monolog\Formatter\LineFormatter::class,
                         'constructor' => [
-                            'format' => null,
+                            'format' => "%datetime% %level_name% %message% %context% %extra%\n",
                             'dateFormat' => 'Y-m-d H:i:s',
                             'allowInlineLineBreaks' => true,
                         ],

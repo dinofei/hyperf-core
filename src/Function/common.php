@@ -29,12 +29,12 @@ if (!function_exists('extract_exception_message')) {
      * Time: 2020/10/26 20:53
      */
     function extract_exception_message(\Throwable $e, string $prefix = '错误记录'): string {
-        return <<<ERROR
-主题：{$prefix}
-文件：{$e->getFile()}
-行数：{$e->getLine()}
-信息：{$e->getMessage()}
-追溯：{$e->getTraceAsString()}
-ERROR;
+        return sprintf("标题：%s --- 文件：%s --- 行数：%s信息：%s --- 追溯：%s",
+            $prefix,
+            $e->getFile(),
+            $e->getLine(),
+            $e->getMessage(),
+            str_replace(["\r\n", "\n"], '', $e->getTraceAsString())
+        );
     }
 }
