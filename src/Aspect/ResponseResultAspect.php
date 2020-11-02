@@ -5,7 +5,7 @@ namespace Bjyyb\Core\Aspect;
 
 
 use Bjyyb\Core\Annotation\ResponseResult;
-use Bjyyb\Core\Base\BaseException;
+use Bjyyb\Core\Exception\BaseException;
 use Bjyyb\Core\Constants\ErrorCode;
 use Bjyyb\Core\Constants\StatusCode;
 use Bjyyb\Core\DataStructure\Result;

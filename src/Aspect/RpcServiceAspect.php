@@ -5,7 +5,7 @@ namespace Bjyyb\Core\Aspect;
 
 
 use Bjyyb\Core\Constants\ErrorCode;
-use Bjyyb\Core\Base\BaseException;
+use Bjyyb\Core\Exception\BaseException;
 use Bjyyb\Core\DataStructure\Result;
 use Bjyyb\Core\Util\LogUtil;
 use Hyperf\Di\Aop\AbstractAspect;
