@@ -50,7 +50,7 @@ class ConfigProvider
                         'class' => \Monolog\Handler\RotatingFileHandler::class,
                         'constructor' => [
                             'filename' => env('LOG_PATH', BASE_PATH . '/runtime/logs') . '/default/hyperf.log',
-                            'level' => \Monolog\Logger::ERROR,
+                            'level' => \Monolog\Logger::DEBUG,
                         ],
                     ],
                     'formatter' => [
