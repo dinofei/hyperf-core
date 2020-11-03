@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Bjyyb\Core\Exception\Handler\Http;
 
 use Bjyyb\Core\Constants\ErrorCode;
+use Bjyyb\Core\DataStructure\Result;
 use Bjyyb\Core\Util\LogUtil;
 use Bjyyb\Core\Constants\StatusCode;
 use Hyperf\ExceptionHandler\ExceptionHandler;
@@ -21,17 +22,23 @@ class AppExceptionHandler extends ExceptionHandler
 {
     public function handle(Throwable $throwable, ResponseInterface $response)
     {
+        $this->stopPropagation();
         $statusCode = StatusCode::SERVER_ERROR;
         $code = ErrorCode::SERVER_ERROR;
-        $data = [];
         /** 当前为开发环境时 直接将错误信息返给客户端 */
         $message = extract_exception_message($throwable);
-        /** 当前为线上环境时 直接将错误信息输出到日志中 并给前端输出友好提示 */
+        /** 当前为线上环境时 给前端输出友好提示 */
         if (env('APP_ENV', 'dev') !== 'dev') {
-            LogUtil::get('http', 'core-default')->error($message);
             $message = ErrorCode::getMessage($code);
         }
-        return $response->withStatus($statusCode)->withBody(new SwooleStream(Json::encode(compact('code', 'message', 'data'))));
+        /** 将错误信息输出到日志中  方便以后分析 */
+        LogUtil::get('http', 'core-default')->error($message);
+
+        $result = Result::fail($code, $message);
+        return $response
+            ->withHeader('Content-type', 'application/json;charset=utf-8')
+            ->withStatus($statusCode)
+            ->withBody(new SwooleStream(Json::encode($result->toArray())));
     }
 
     public function isValid(Throwable $throwable): bool
