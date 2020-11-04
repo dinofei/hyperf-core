@@ -58,23 +58,6 @@ class ConfigProvider
                 ],
             ],
             'logger' => [
-                'default' => [
-                    'handler' => [
-                        'class' => \Monolog\Handler\RotatingFileHandler::class,
-                        'constructor' => [
-                            'filename' => env('LOG_PATH', BASE_PATH . '/runtime/logs') . '/default/debug.log',
-                            'level' => \Monolog\Logger::DEBUG,
-                        ],
-                    ],
-                    'formatter' => [
-                        'class' => \Monolog\Formatter\LineFormatter::class,
-                        'constructor' => [
-                            'format' => "%datetime% %level_name% %message% %context% %extra%\n",
-                            'dateFormat' => 'Y-m-d H:i:s',
-                            'allowInlineLineBreaks' => true,
-                        ],
-                    ],
-                ],
                 'core-default' => [
                     'handler' => [
                         'class' => \Monolog\Handler\RotatingFileHandler::class,

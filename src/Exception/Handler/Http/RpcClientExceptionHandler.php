@@ -50,7 +50,7 @@ class RpcClientExceptionHandler extends ExceptionHandler
                 $message = $prefix . ' ' . $data['message'];
                 if (env('APP_ENV', 'dev') !== 'dev') {
                     LogUtil::get('jsonrpc-client', 'core-default')->error($message);
-                    $message = $prefix . ' ' . ErrorCode::getMessage($code);
+                    $message = '请求ID：' . $prefix . ' ' . ErrorCode::getMessage($code);
                 }
             }
         } else {
@@ -61,7 +61,7 @@ class RpcClientExceptionHandler extends ExceptionHandler
             $message = $throwable->getMessage();
             if (env('APP_ENV', 'dev') !== 'dev') {
                 LogUtil::get('jsonrpc-client', 'core-default')->error($message);
-                $message = $prefix . ' ' . ErrorCode::getMessage($code);
+                $message = '请求ID：' . $prefix . ' ' . ErrorCode::getMessage($code);
             }
         }
         $result = Result::fail($code, $message);

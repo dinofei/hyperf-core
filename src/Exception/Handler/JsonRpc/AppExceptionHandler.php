@@ -38,7 +38,7 @@ class AppExceptionHandler extends ExceptionHandler
         /** 将异常转化为错误信息 */
         $message = extract_exception_message($throwable);
         /** 将错误信息输出到日志中 方便以后分析 */
-        LogUtil::get('jsonrpc', 'core-default')->error($contents['id'] . ' ' . $message);
+        LogUtil::get('jsonrpc', 'core-default')->error('请求ID：' . $contents['id'] . ' ' . $message);
 
         return $response->withBody(new SwooleStream($packer->pack($contents)));
     }
