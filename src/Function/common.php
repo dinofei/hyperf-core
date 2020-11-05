@@ -4,6 +4,7 @@
  */
 
 use Bjyyb\Core\Exception\BaseException;
+use Hyperf\Contract\LengthAwarePaginatorInterface;
 
 if (!function_exists('abort_error')) {
     /**
@@ -36,5 +37,23 @@ if (!function_exists('extract_exception_message')) {
             $e->getMessage(),
             str_replace(["\r\n", "\n"], '', $e->getTraceAsString())
         );
+    }
+}
+
+if (!function_exists('format_paginator')) {
+    /**
+     * 格式化分页器 返回数组
+     * @param LengthAwarePaginatorInterface $paginator
+     * @return array
+     * Author: nf
+     * Time: 2020/11/5 16:20
+     */
+    function format_paginator(LengthAwarePaginatorInterface $paginator): array {
+        return [
+            'data' => $paginator->items(),
+            'list_page' => $paginator->lastPage(),
+            'list_rows' => $paginator->perPage(),
+            'current' => $paginator->currentPage(),
+        ];
     }
 }
