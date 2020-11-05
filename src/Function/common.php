@@ -51,7 +51,7 @@ if (!function_exists('format_paginator')) {
     function format_paginator(LengthAwarePaginatorInterface $paginator): array {
         return [
             'data' => $paginator->items(),
-            'list_page' => $paginator->lastPage(),
+            'last_page' => $paginator->lastPage(),
             'list_rows' => $paginator->perPage(),
             'current' => $paginator->currentPage(),
         ];
