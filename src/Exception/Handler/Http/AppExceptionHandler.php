@@ -9,6 +9,8 @@ use Bjyyb\Core\Util\LogUtil;
 use Bjyyb\Core\Constants\StatusCode;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
+use Hyperf\HttpServer\Contract\RequestInterface;
+use Hyperf\Utils\ApplicationContext;
 use Hyperf\Utils\Codec\Json;
 use Psr\Http\Message\ResponseInterface;
 use Throwable;
@@ -23,6 +25,7 @@ class AppExceptionHandler extends ExceptionHandler
     public function handle(Throwable $throwable, ResponseInterface $response)
     {
         $this->stopPropagation();
+        $request = ApplicationContext::getContainer()->get(RequestInterface::class);
         $statusCode = StatusCode::SERVER_ERROR;
         $code = ErrorCode::SERVER_ERROR;
         /** 当前为开发环境时 直接将错误信息返给客户端 */
@@ -32,7 +35,12 @@ class AppExceptionHandler extends ExceptionHandler
             $message = ErrorCode::getMessage($code);
         }
         /** 将错误信息输出到日志中  方便以后分析 */
-        LogUtil::get('http', 'core-default')->error($message);
+        $context = [
+            'url' => $request->fullUrl(),
+            'method' => $request->getMethod(),
+            'params' => $request->all(),
+        ];
+        LogUtil::get(env('APP_NAME') . ':http', 'core-default')->error($message, $context);
 
         $result = Result::fail($code, $message);
         return $response
