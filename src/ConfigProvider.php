@@ -8,6 +8,7 @@ use Bjyyb\Core\Exception\Handler\Http\RpcClientExceptionHandler;
 use Bjyyb\Core\Exception\Handler\Http\ValidationExceptionHandler;
 use Bjyyb\Core\Exception\Handler\JsonRpc\AppExceptionHandler as JsonRpcAppExceptionHandler;
 use Bjyyb\Core\Exception\Handler\JsonRpc\BaseExceptionHandler as JsonRpcBaseExceptionHandler;
+use Bjyyb\Core\Exception\Handler\JsonRpc\RpcClientExceptionHandler as JsonRpcClientExceptionHandler;
 use Bjyyb\Core\Exception\Handler\JsonRpc\ValidationExceptionHandler as JsonRpcValidationExceptionHandler;
 use Bjyyb\Core\Listener\DbQueryExecutedListener;
 use Hyperf\ExceptionHandler\Listener\ErrorExceptionHandler;
@@ -53,6 +54,7 @@ class ConfigProvider
                     'jsonrpc' => array(
                         JsonRpcValidationExceptionHandler::class,
                         JsonRpcBaseExceptionHandler::class,
+                        JsonRpcClientExceptionHandler::class,
                         JsonRpcAppExceptionHandler::class,
                     ),
                 ],

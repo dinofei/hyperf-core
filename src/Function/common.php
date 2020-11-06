@@ -4,7 +4,9 @@
  */
 
 use Bjyyb\Core\Exception\BaseException;
+use Hyperf\Contract\ConfigInterface;
 use Hyperf\Contract\LengthAwarePaginatorInterface;
+use Hyperf\Utils\ApplicationContext;
 
 if (!function_exists('abort_error')) {
     /**
@@ -40,6 +42,28 @@ if (!function_exists('extract_exception_message')) {
     }
 }
 
+if (!function_exists('get_jsonrpc_packer')) {
+    /**
+     * 获取rpc服务的打包协议
+     * @param string $name 服务名称
+     *
+     * Author: nf
+     * Time: 2020/11/6 13:53
+     */
+    function get_jsonrpc_packer(string $name) {
+        $config = ApplicationContext::getContainer()->get(ConfigInterface::class);
+        $packerClass = $config->get('protocols.jsonrpc.packer');
+        $serverConfig = [];
+        foreach ($config->get('server.servers') as $item) {
+            if ($item['name'] === $name) {
+                $serverConfig = $item;
+                break;
+            }
+        }
+        return make($packerClass, $serverConfig);
+    }
+}
+
 if (!function_exists('format_paginator')) {
     /**
      * 格式化分页器 返回数组
@@ -57,3 +81,4 @@ if (!function_exists('format_paginator')) {
         ];
     }
 }
+

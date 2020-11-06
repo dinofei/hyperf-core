@@ -10,7 +10,9 @@ use Bjyyb\Core\Util\LogUtil;
 use Bjyyb\Core\Constants\StatusCode;
 use Hyperf\ExceptionHandler\ExceptionHandler;
 use Hyperf\HttpMessage\Stream\SwooleStream;
+use Hyperf\HttpServer\Contract\RequestInterface;
 use Hyperf\RpcClient\Exception\RequestException;
+use Hyperf\Utils\ApplicationContext;
 use Hyperf\Utils\Codec\Json;
 use Hyperf\Validation\ValidationException;
 use Psr\Http\Message\ResponseInterface;
@@ -29,6 +31,7 @@ class RpcClientExceptionHandler extends ExceptionHandler
         /** @var RequestException $throwable */
         
         $data = $throwable->getThrowable();
+        $request = ApplicationContext::getContainer()->get(RequestInterface::class);
 
         if (!empty($data)) {
             if ($data['class'] === ValidationException::class) {
@@ -44,24 +47,36 @@ class RpcClientExceptionHandler extends ExceptionHandler
             } else {
                 /** 预料之外的异常 需要记录错误信息到日志 并且生产环境下避免输出敏感信息 */
                 /** 加上rpc请求ID 便于以后查询追踪 */
-                $prefix = $data['request_id'] ?? 'no_request_id';
                 $statusCode = StatusCode::SERVER_ERROR;
                 $code = ErrorCode::SERVER_ERROR;
-                $message = $prefix . ' ' . $data['message'];
+                $message = $data['message'];
+                $context = [
+                    'url' => $request->fullUrl(),
+                    'method' => $request->getMethod(),
+                    'params' => $request->all(),
+                    'request_id' => $data['request_id'] ?? 'no_request_id',
+                ];
+                LogUtil::get(env('APP_NAME') . ':jsonrpc-client', 'core-default')->error($message, $context);
+
                 if (env('APP_ENV', 'dev') !== 'dev') {
-                    LogUtil::get('jsonrpc-client', 'core-default')->error($message);
-                    $message = '请求ID：' . $prefix . ' ' . ErrorCode::getMessage($code);
+                    $message = ErrorCode::getMessage($code);
                 }
             }
         } else {
             /** 预料之外的异常 需要记录错误信息到日志 并且生产环境下避免输出敏感信息 */
-            $prefix = 'no_request_id';
             $statusCode = StatusCode::SERVER_ERROR;
             $code = ErrorCode::SERVER_ERROR;
             $message = $throwable->getMessage();
+            $context = [
+                'url' => $request->fullUrl(),
+                'method' => $request->getMethod(),
+                'params' => $request->all(),
+                'request_id' => $data['request_id'] ?? 'no_request_id',
+            ];
+            LogUtil::get(env('APP_NAME') . ':jsonrpc-client', 'core-default')->error($message, $context);
+
             if (env('APP_ENV', 'dev') !== 'dev') {
-                LogUtil::get('jsonrpc-client', 'core-default')->error($message);
-                $message = '请求ID：' . $prefix . ' ' . ErrorCode::getMessage($code);
+                $message = ErrorCode::getMessage($code);
             }
         }
         $result = Result::fail($code, $message);
