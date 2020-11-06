@@ -54,7 +54,7 @@ class RpcClientExceptionHandler extends ExceptionHandler
                     'url' => $request->fullUrl(),
                     'method' => $request->getMethod(),
                     'params' => $request->all(),
-                    'request_id' => $data['request_id'] ?? 'no_request_id',
+                    'request_id' => $data['response_id'] ?? 'no_request_id',
                 ];
                 LogUtil::get(env('APP_NAME') . ':jsonrpc-client', 'core-default')->error($message, $context);
 
