@@ -6,6 +6,7 @@
 use Bjyyb\Core\Exception\BaseException;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Contract\LengthAwarePaginatorInterface;
+use Hyperf\Contract\PaginatorInterface;
 use Hyperf\Utils\ApplicationContext;
 
 if (!function_exists('abort_error')) {
@@ -67,12 +68,12 @@ if (!function_exists('get_jsonrpc_packer')) {
 if (!function_exists('format_paginator')) {
     /**
      * 格式化分页器 返回数组
-     * @param LengthAwarePaginatorInterface $paginator
+     * @param PaginatorInterface $paginator
      * @return array
      * Author: nf
      * Time: 2020/11/5 16:20
      */
-    function format_paginator(LengthAwarePaginatorInterface $paginator): array {
+    function format_paginator(PaginatorInterface $paginator): array {
         return [
             'data' => $paginator->items(),
             'last_page' => $paginator->lastPage(),
