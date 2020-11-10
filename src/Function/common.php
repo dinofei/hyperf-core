@@ -79,6 +79,7 @@ if (!function_exists('format_paginator')) {
             'last_page' => $paginator->lastPage(),
             'list_rows' => $paginator->perPage(),
             'current' => $paginator->currentPage(),
+            'total' => $paginator->total(),
         ];
     }
 }
