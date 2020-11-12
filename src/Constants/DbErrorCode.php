@@ -42,6 +42,6 @@ class DbErrorCode extends AbstractConstants
     /**
      * @Message("删除失败")
      */
-    const DELETE_FAIL = 3101;
+    const DELETE_FAIL = 3105;
 
 }
