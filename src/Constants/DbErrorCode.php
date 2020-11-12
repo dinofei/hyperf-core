@@ -39,5 +39,9 @@ class DbErrorCode extends AbstractConstants
      * @Message("分页查询页码错误")
      */
     const PAGE_ERROR = 3104;
+    /**
+     * @Message("删除失败")
+     */
+    const DELETE_FAIL = 3101;
 
 }
