@@ -5,7 +5,6 @@
 
 use Bjyyb\Core\Exception\BaseException;
 use Hyperf\Contract\ConfigInterface;
-use Hyperf\Contract\LengthAwarePaginatorInterface;
 use Hyperf\Contract\PaginatorInterface;
 use Hyperf\Utils\ApplicationContext;
 
