@@ -30,10 +30,6 @@ class AppExceptionHandler extends ExceptionHandler
         $code = ErrorCode::SERVER_ERROR;
         /** 当前为开发环境时 直接将错误信息返给客户端 */
         $message = extract_exception_message($throwable);
-        /** 当前为线上环境时 给前端输出友好提示 */
-        if (env('APP_ENV', 'dev') !== 'dev') {
-            $message = ErrorCode::getMessage($code);
-        }
         /** 将错误信息输出到日志中  方便以后分析 */
         $context = [
             'url' => $request->fullUrl(),
@@ -41,6 +37,11 @@ class AppExceptionHandler extends ExceptionHandler
             'params' => $request->all(),
         ];
         LogUtil::get(env('APP_NAME') . ':http', 'core-default')->error($message, $context);
+
+        /** 当前为线上环境时 给前端输出友好提示 */
+        if (env('APP_ENV', 'dev') !== 'dev') {
+            $message = ErrorCode::getMessage($code);
+        }
 
         $result = Result::fail($code, $message);
         return $response
