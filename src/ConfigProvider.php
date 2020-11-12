@@ -2,6 +2,7 @@
 
 namespace Bjyyb\Core;
 
+use Bjyyb\Core\Command\ServerManagerCommand;
 use Bjyyb\Core\Exception\Handler\Http\AppExceptionHandler;
 use Bjyyb\Core\Exception\Handler\Http\BaseExceptionHandler;
 use Bjyyb\Core\Exception\Handler\Http\RpcClientExceptionHandler;
@@ -31,7 +32,9 @@ class ConfigProvider
                     ],
                 ],
             ],
-            'commands' => [],
+            'commands' => [
+                ServerManagerCommand::class,
+            ],
             'listeners' => [
                 ErrorExceptionHandler::class,
                 DbQueryExecutedListener::class,
