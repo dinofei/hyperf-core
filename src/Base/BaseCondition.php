@@ -10,10 +10,11 @@ use Hyperf\Utils\Context;
 /**
  * Note: 查询条件
  *
- * @method static setSelect(array $select)
- * @method static setWhere(array $data = [])
- * @method static setOrder(string $raw)
- * @method static setPerPage(int $perPage)
+ * @method $this setSelect(array $select)
+ * @method $this setWhere(array $where = [])
+ * @method $this setOrder(string $raw)
+ * @method $this setPerPage(int $perPage)
+ * @method $this addWhereAttribute(array $where)
  * @method array getWhere()
  * @method int getPerPage()
  * @method array getSelect()
@@ -93,6 +94,19 @@ abstract class BaseCondition
     protected function _setOrder(string $raw)
     {
         $this->order = $raw;
+        return $this;
+    }
+
+    /**
+     * 添加where条件
+     * @param array $where
+     * @return $this
+     * Author: nf
+     * Time: 2020/11/13 16:10
+     */
+    protected function _addWhereAttribute(array $where)
+    {
+        $this->where[] = $where;
         return $this;
     }
 
