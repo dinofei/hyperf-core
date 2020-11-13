@@ -12,7 +12,7 @@ use Hyperf\Utils\Context;
  *
  * @method BaseCondition setSelect(array $select)
  * @method BaseCondition setWhere(array $data = [])
- * @method BaseCondition setOrder(string $field, string $order)
+ * @method BaseCondition setOrder(string $raw)
  * @method BaseCondition setPerPage(int $perPage)
  * @method array getWhere()
  * @method int getPerPage()
