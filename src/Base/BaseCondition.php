@@ -12,7 +12,7 @@ use Hyperf\Utils\Context;
  *
  * @method BaseCondition setSelect(array $select)
  * @method BaseCondition setWhere(array $data = [])
- * @method BaseCondition setOrder(array $order)
+ * @method BaseCondition setOrder(string $field, string $order)
  * @method BaseCondition setPerPage(int $perPage)
  * @method array getWhere()
  * @method int getPerPage()
@@ -32,8 +32,8 @@ abstract class BaseCondition
     protected $where = [];
     /** @var string[] 查询字段 */
     protected $select = ['*'];
-    /** @var string[] 排序 */
-    protected $order = ['id' => 'asc'];
+    /** @var string 排序 */
+    protected $order = 'id asc';
     /** @var int 分页步长 */
     protected $perPage = 20;
 
@@ -85,14 +85,14 @@ abstract class BaseCondition
 
     /**
      * 设置排序字段
-     * @param array $order
+     * @param string $raw
      * @return $this
      * Author: nf
      * Time: 2020/11/5 17:01
      */
-    protected function _setOrder(array $order)
+    protected function _setOrder(string $raw)
     {
-        $this->order = $order;
+        $this->order = $raw;
         return $this;
     }
 
@@ -150,7 +150,7 @@ abstract class BaseCondition
      */
     protected function _getOrder()
     {
-        return $this->select;
+        return $this->order;
     }
 
     public function __call($name, $arguments)
