@@ -10,10 +10,10 @@ use Hyperf\Utils\Context;
 /**
  * Note: 查询条件
  *
- * @method BaseCondition setSelect(array $select)
- * @method BaseCondition setWhere(array $data = [])
- * @method BaseCondition setOrder(string $raw)
- * @method BaseCondition setPerPage(int $perPage)
+ * @method static setSelect(array $select)
+ * @method static setWhere(array $data = [])
+ * @method static setOrder(string $raw)
+ * @method static setPerPage(int $perPage)
  * @method array getWhere()
  * @method int getPerPage()
  * @method array getSelect()
