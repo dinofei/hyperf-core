@@ -17,7 +17,7 @@ use Hyperf\Utils\Context;
  * @method array getWhere()
  * @method int getPerPage()
  * @method array getSelect()
- * @method array getOrder()
+ * @method string getOrder()
  *
  * Author: nf
  * Time: 2020/11/12 15:22
