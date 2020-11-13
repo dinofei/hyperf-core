@@ -3,6 +3,8 @@
  * 通用操作函数库
  */
 
+use Bjyyb\Core\Constants\DbErrorCode;
+use Bjyyb\Core\Constants\ErrorCode;
 use Bjyyb\Core\Exception\BaseException;
 use Hyperf\Contract\ConfigInterface;
 use Hyperf\Contract\PaginatorInterface;
@@ -19,6 +21,30 @@ if (!function_exists('abort_error')) {
      */
     function abort_error(int $code, string $message) {
         throw new BaseException($code, $message);
+    }
+}
+
+if (!function_exists('abort_common_error')) {
+    /**
+     * 抛出异常
+     * @param int $code
+     * Author: nf
+     * Time: 2020/11/13 9:40
+     */
+    function abort_common_error(int $code) {
+        abort_error($code, ErrorCode::getMessage($code));
+    }
+}
+
+if (!function_exists('abort_db_error')) {
+    /**
+     * 抛出异常
+     * @param int $code
+     * Author: nf
+     * Time: 2020/10/29 12:59
+     */
+    function abort_db_error(int $code) {
+        abort_error($code, DbErrorCode::getMessage($code));
     }
 }
 
