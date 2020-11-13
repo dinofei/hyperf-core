@@ -144,7 +144,7 @@ abstract class BaseCondition
 
     /**
      * 获取排序字段
-     * @return string[]
+     * @return string
      * Author: nf
      * Time: 2020/11/5 17:02
      */
