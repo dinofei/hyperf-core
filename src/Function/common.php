@@ -58,7 +58,8 @@ if (!function_exists('extract_exception_message')) {
      * Time: 2020/10/26 20:53
      */
     function extract_exception_message(\Throwable $e, string $prefix = '错误记录'): string {
-        return sprintf("标题：%s --- 文件：%s --- 行数：%s信息：%s --- 追溯：%s",
+        return sprintf("时间：%s --- 标题：%s --- 文件：%s --- 行数：%s信息：%s --- 追溯：%s",
+            date('Y-m-d H:i:s'),
             $prefix,
             $e->getFile(),
             $e->getLine(),
