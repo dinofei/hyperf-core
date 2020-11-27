@@ -1,8 +1,10 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Bjyyb\Core\Base;
 
+use Hyperf\Di\Annotation\Inject;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -12,7 +14,9 @@ use Psr\Container\ContainerInterface;
  */
 abstract class BaseController
 {
-    /** @var ContainerInterface $container */
+    /** 
+     * @Inject()
+     * @var ContainerInterface $container 
+     */
     protected $container;
-
 }
