@@ -3,17 +3,17 @@
 namespace Bjyyb\Core;
 
 use Bjyyb\Core\Command\ServerManagerCommand;
+use Bjyyb\Core\Listener\DbQueryExecutedListener;
+use Hyperf\Validation\Middleware\ValidationMiddleware;
 use Bjyyb\Core\Exception\Handler\Http\AppExceptionHandler;
 use Bjyyb\Core\Exception\Handler\Http\BaseExceptionHandler;
+use Hyperf\ExceptionHandler\Listener\ErrorExceptionHandler;
 use Bjyyb\Core\Exception\Handler\Http\RpcClientExceptionHandler;
 use Bjyyb\Core\Exception\Handler\Http\ValidationExceptionHandler;
 use Bjyyb\Core\Exception\Handler\JsonRpc\AppExceptionHandler as JsonRpcAppExceptionHandler;
 use Bjyyb\Core\Exception\Handler\JsonRpc\BaseExceptionHandler as JsonRpcBaseExceptionHandler;
 use Bjyyb\Core\Exception\Handler\JsonRpc\RpcClientExceptionHandler as JsonRpcClientExceptionHandler;
 use Bjyyb\Core\Exception\Handler\JsonRpc\ValidationExceptionHandler as JsonRpcValidationExceptionHandler;
-use Bjyyb\Core\Listener\DbQueryExecutedListener;
-use Hyperf\ExceptionHandler\Listener\ErrorExceptionHandler;
-use Hyperf\Validation\Middleware\ValidationMiddleware;
 
 class ConfigProvider
 {
@@ -23,8 +23,7 @@ class ConfigProvider
         require_once __DIR__ . '/Function/common.php';
 
         return [
-            'dependencies' => [
-            ],
+            'dependencies' => [],
             'annotations' => [
                 'scan' => [
                     'paths' => [
@@ -39,8 +38,7 @@ class ConfigProvider
                 ErrorExceptionHandler::class,
                 DbQueryExecutedListener::class,
             ],
-            'aspects' => [
-            ],
+            'aspects' => [],
             'middlewares' => [
                 'http' => [
                     ValidationMiddleware::class,
@@ -115,14 +113,14 @@ class ConfigProvider
                     ],
                 ],
             ],
-//            'publish' => [
-//                [
-//                    'id' => 'config',
-//                    'description' => 'description of this config file.',
-//                    'source' => __DIR__ . '/../publish/file.php',
-//                    'destination' => BASE_PATH . '/config/autoload/file.php',
-//                ],
-//            ],
+            //            'publish' => [
+            //                [
+            //                    'id' => 'config',
+            //                    'description' => 'description of this config file.',
+            //                    'source' => __DIR__ . '/../publish/file.php',
+            //                    'destination' => BASE_PATH . '/config/autoload/file.php',
+            //                ],
+            //            ],
         ];
     }
 }
