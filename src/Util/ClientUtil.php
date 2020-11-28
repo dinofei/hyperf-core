@@ -9,7 +9,7 @@ namespace Bjyyb\Core\Util;
  * Author: nf
  * Time: 2020/11/18 16:32
  */
-class Client
+class ClientUtil
 {
     /**
      * http请求
