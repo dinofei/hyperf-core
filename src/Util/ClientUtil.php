@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Bjyyb\Core\Util\ClientUtil;
+namespace Bjyyb\Core\Util;
 
 /**
  * Note: 客户端交互工具
