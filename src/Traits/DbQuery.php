@@ -18,17 +18,33 @@ use Hyperf\Contract\PaginatorInterface;
  */
 trait DbQuery
 {
+    /**
+     * 模型存储器
+     * @var array
+     */
+    protected $modelStorage = [];
 
+    /**
+     * 获取模型实例
+     *
+     * @return Model
+     * Author nf
+     * Time 2020-11-29
+     */
     protected function getModelInstance(): Model
     {
-        if (false !== ($name = substr(static::class, 0, -10))) {
-            $modelName = sprintf('%sModel', str_replace('Repository', 'Model', $name));
-            if (!class_exists($modelName)) {
-                abort_common_error(ErrorCode::MODEL_NOT_FOUND);
+        if (!isset($this->modelStorage[static::class])) {
+            if (false !== ($name = substr(static::class, 0, -10))) {
+                $modelName = sprintf('%sModel', str_replace('Repository', 'Model', $name));
+                if (!class_exists($modelName)) {
+                    abort_common_error(ErrorCode::MODEL_NOT_FOUND);
+                }
+                $this->modelStorage[static::class] = $modelName;
+            } else {
+                abort_common_error(ErrorCode::REPOSITORY_NOT_FOUND, static::class);
             }
-            return new $modelName();
         }
-        abort_common_error(ErrorCode::REPOSITORY_NOT_FOUND, static::class);
+        return new $this->modelStorage[static::class]();
     }
 
     /**
