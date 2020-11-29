@@ -1,14 +1,15 @@
 <?php
+
 /**
  * 通用操作函数库
  */
 
-use Bjyyb\Core\Constants\DbErrorCode;
 use Bjyyb\Core\Constants\ErrorCode;
-use Bjyyb\Core\Exception\BaseException;
 use Hyperf\Contract\ConfigInterface;
-use Hyperf\Contract\PaginatorInterface;
 use Hyperf\Utils\ApplicationContext;
+use Bjyyb\Core\Constants\DbErrorCode;
+use Bjyyb\Core\Exception\BaseException;
+use Hyperf\Contract\PaginatorInterface;
 
 if (!function_exists('abort_error')) {
     /**
@@ -19,7 +20,8 @@ if (!function_exists('abort_error')) {
      * Author: nf
      * Time: 2020/10/26 20:50
      */
-    function abort_error(int $code, string $message) {
+    function abort_error(int $code, string $message)
+    {
         throw new BaseException($code, $message);
     }
 }
@@ -31,7 +33,8 @@ if (!function_exists('abort_common_error')) {
      * Author: nf
      * Time: 2020/11/13 9:40
      */
-    function abort_common_error(int $code) {
+    function abort_common_error(int $code)
+    {
         abort_error($code, ErrorCode::getMessage($code));
     }
 }
@@ -43,7 +46,8 @@ if (!function_exists('abort_db_error')) {
      * Author: nf
      * Time: 2020/10/29 12:59
      */
-    function abort_db_error(int $code) {
+    function abort_db_error(int $code)
+    {
         abort_error($code, DbErrorCode::getMessage($code));
     }
 }
@@ -57,8 +61,10 @@ if (!function_exists('extract_exception_message')) {
      * Author: nf
      * Time: 2020/10/26 20:53
      */
-    function extract_exception_message(\Throwable $e, string $prefix = '错误记录'): string {
-        return sprintf("时间：%s --- 标题：%s --- 文件：%s --- 行数：%s信息：%s --- 追溯：%s",
+    function extract_exception_message(\Throwable $e, string $prefix = '错误记录'): string
+    {
+        return sprintf(
+            "时间：%s --- 标题：%s --- 文件：%s --- 行数：%s信息：%s --- 追溯：%s",
             date('Y-m-d H:i:s'),
             $prefix,
             $e->getFile(),
@@ -77,7 +83,8 @@ if (!function_exists('get_jsonrpc_packer')) {
      * Author: nf
      * Time: 2020/11/6 13:53
      */
-    function get_jsonrpc_packer(string $name) {
+    function get_jsonrpc_packer(string $name)
+    {
         $config = ApplicationContext::getContainer()->get(ConfigInterface::class);
         $packerClass = $config->get('protocols.jsonrpc.packer');
         $serverConfig = [];
@@ -99,7 +106,8 @@ if (!function_exists('format_paginator')) {
      * Author: nf
      * Time: 2020/11/5 16:20
      */
-    function format_paginator(PaginatorInterface $paginator): array {
+    function format_paginator(PaginatorInterface $paginator): array
+    {
         return [
             'data' => $paginator->items(),
             'last_page' => $paginator->lastPage(),
@@ -109,4 +117,3 @@ if (!function_exists('format_paginator')) {
         ];
     }
 }
-

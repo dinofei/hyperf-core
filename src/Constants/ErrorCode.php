@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Bjyyb\Core\Constants;
@@ -59,5 +60,12 @@ class ErrorCode extends AbstractConstants
      * @Message("服务器内部错误")
      */
     const SERVER_ERROR = 4000;
-
+    /**
+     * @Message("未找到相关仓库类")
+     */
+    const REPOSITORY_NOT_FOUND = 10001;
+    /**
+     * @Message("未找到相关模型类")
+     */
+    const MODEL_NOT_FOUND = 10002;
 }

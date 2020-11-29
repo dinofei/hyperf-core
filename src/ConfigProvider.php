@@ -20,7 +20,7 @@ class ConfigProvider
     public function __invoke(): array
     {
         /** 手动引入自定义函数文件 */
-        require_once __DIR__ . '/Function/common.php';
+        require_once __DIR__ . '/functions.php';
 
         return [
             'dependencies' => [],
