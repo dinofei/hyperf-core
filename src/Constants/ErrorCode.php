@@ -35,7 +35,7 @@ class ErrorCode extends AbstractConstants
     /**
      * @Message("请求成功")
      */
-    const NORMAL = 0;
+    const NORMAL = -1;
 
     /**
      * @Message("参数验证失败")
