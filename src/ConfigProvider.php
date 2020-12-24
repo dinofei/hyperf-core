@@ -4,7 +4,6 @@ namespace Bjyyb\Core;
 
 use Bjyyb\Core\Command\ServerManagerCommand;
 use Bjyyb\Core\Listener\DbQueryExecutedListener;
-use Hyperf\Validation\Middleware\ValidationMiddleware;
 use Bjyyb\Core\Exception\Handler\Http\AppExceptionHandler;
 use Bjyyb\Core\Exception\Handler\Http\BaseExceptionHandler;
 use Hyperf\ExceptionHandler\Listener\ErrorExceptionHandler;
@@ -39,11 +38,6 @@ class ConfigProvider
                 DbQueryExecutedListener::class,
             ],
             'aspects' => [],
-            'middlewares' => [
-                'http' => [
-                    ValidationMiddleware::class,
-                ],
-            ],
             'exceptions' => [
                 'handler' => [
                     'http' => [
